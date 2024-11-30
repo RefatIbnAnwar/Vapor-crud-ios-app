@@ -11,7 +11,7 @@ import SwiftUI
 struct Vapor_crud_ios_appApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SongListView()
         }
     }
 }
