@@ -6,7 +6,7 @@
 //
 
 enum Constants {
-    static let baseUrl = ""
+    static let baseUrl = "http://127.0.0.1:8080/"
 }
 
 enum EndPoints {
