@@ -31,6 +31,7 @@ struct SongListView: View {
             .toolbar {
                 Button{
                     // Add song
+                    modal = .add
                 } label: {
                     Label("Add Song", systemImage: "plus.circle")
                 }
@@ -48,13 +49,22 @@ struct SongListView: View {
             }
         }
         .sheet(item: $modal, onDismiss: {
-            // dismiss
-        }){ modal in
+            // after dismiss code
+            Task {
+                do {
+                    try await viewModel.fetchSongs()
+                }
+                catch {
+                    print("error \(error)")
+                }
+            }
+        })
+        { modal in
             switch modal {
             case .add:
-                Text("add song")
+                AddUpdateSongView(viewmodel: AddUpdateViewModel())
             case .update(let song):
-                Text("update song")
+                AddUpdateSongView(viewmodel: AddUpdateViewModel(currentSong: song))
             }
         }
     }

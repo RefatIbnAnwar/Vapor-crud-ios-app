@@ -10,6 +10,7 @@ import SwiftUI
 struct AddUpdateSongView: View {
     
     @ObservedObject var viewmodel: AddUpdateViewModel
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
@@ -17,9 +18,11 @@ struct AddUpdateSongView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             Button {
-                
+                viewmodel.addUpdateAction {
+                    presentationMode.wrappedValue.dismiss()
+                }
             } label: {
-                Text("")
+                viewmodel.isUpdating ? Text("Update") : Text("Add")
             }
             
         }
@@ -27,5 +30,5 @@ struct AddUpdateSongView: View {
 }
 
 #Preview {
-    AddUpdateSongView()
+    AddUpdateSongView(viewmodel: AddUpdateViewModel())
 }

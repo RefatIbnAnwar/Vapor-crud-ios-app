@@ -37,5 +37,24 @@ final class AddUpdateViewModel: ObservableObject {
         }
         
         let song = Song(id: nil, title: self.songTitle)
+        try await HTTPClient.shared.send(to: url,
+                                         object: song,
+                                         httpMethod: HTTPMethods.POST.rawValue)
+    }
+    
+    func addUpdateAction(completion: @escaping () -> Void ) {
+        Task {
+            do {
+                if isUpdating {
+                    //update
+                } else {
+                    try await addSong()
+                }
+            } catch {
+                print("error \(error)")
+            }
+            completion()
+        }
+        
     }
 }

@@ -46,6 +46,17 @@ class HTTPClient {
     }
     
     func send<T: Codable>(to url: URL, object: T, httpMethod: String) async throws {
+        var request = URLRequest(url: url)
         
+        request.httpMethod = httpMethod
+        request.addValue(MIMEType.JSON.rawValue, forHTTPHeaderField: HTTPHeaders.contentType.rawValue)
+        
+        request.httpBody = try? JSONEncoder().encode(object)
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            throw HttpError.badResponse
+        }
     }
 }
